@@ -1,9 +1,13 @@
 <?php
+// Replace the existing database connection code with this:
 require_once 'config/database.php';
 require_once 'includes/functions.php';
 
 $database = new Database();
 $conn = $database->getConnection();
+
+// Get site settings
+$site_settings = getSiteSettings($conn);
 
 $slug = $_GET['slug'] ?? '';
 
@@ -45,7 +49,7 @@ $recent_posts = $conn->query("
     ORDER BY published_at DESC 
     LIMIT 5
 ")->fetchAll(PDO::FETCH_ASSOC);
-$page_title = htmlspecialchars($post['title']) . " - Elite Sports Management";
+$page_title = htmlspecialchars($post['title']) .' | '. htmlspecialchars($site_settings['site_name']);
 require_once 'header.php';
 ?>
     <!-- Blog Post Header -->

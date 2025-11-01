@@ -34,17 +34,7 @@ if (isset($_GET['delete'])) {
     redirect('manage-contact-submissions.php');
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Submissions - Sports Management CMS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Add Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body class="bg-gray-100">
+
     <?php include 'header.php'; ?>
 
     <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">

@@ -11,7 +11,7 @@ $conn = $database->getConnection();
 
 $message = '';
 $current_dir = $_GET['dir'] ?? 'uploads';
-$base_path = realpath('./') . '/';
+$base_path = realpath('../') . '/';
 
 // Security: Prevent directory traversal
 if (strpos($current_dir, '..') !== false) {
@@ -122,25 +122,6 @@ foreach ($parts as $part) {
     ];
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Manager - Sports Management CMS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .file-item:hover {
-            background-color: #f9fafb;
-        }
-        .image-preview {
-            max-height: 200px;
-            max-width: 200px;
-        }
-    </style>
-</head>
-<body class="bg-gray-100">
     <?php include 'header.php'; ?>
 
     <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">

@@ -311,4 +311,34 @@ if (!function_exists('formatBytes')) {
         return round($bytes, $precision) . ' ' . $units[$pow];
     }
 }
+
+/**
+ * Get site settings
+ */
+// Add this to your includes/functions.php file
+function getSiteSettings($conn) {
+    $stmt = $conn->prepare("SELECT extra_data FROM general_content WHERE section_name = 'site_settings'");
+    $stmt->execute();
+    $settings_data = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    $default_settings = [
+        'site_name' => 'Elite Sports Management',
+        'site_email' => 'info@elitesportsmanagement.com',
+        'contact_phone' => '+1 (555) 123-4567',
+        'contact_address' => '123 Sports Avenue, Athletic City, AC 12345',
+        'facebook_url' => '',
+        'twitter_url' => '',
+        'instagram_url' => '',
+        'linkedin_url' => ''
+    ];
+    
+    if ($settings_data && $settings_data['extra_data']) {
+        $saved_settings = json_decode($settings_data['extra_data'], true);
+        if ($saved_settings) {
+            return array_merge($default_settings, $saved_settings);
+        }
+    }
+    
+    return $default_settings;
+}
 ?>

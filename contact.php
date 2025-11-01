@@ -1,17 +1,20 @@
 <?php
-// contact.php
+// Replace the existing database connection code with this:
 require_once 'config/database.php';
 require_once 'includes/functions.php';
 
 $database = new Database();
 $conn = $database->getConnection();
 
+// Get site settings
+$site_settings = getSiteSettings($conn);
+
 $contact_info = getGeneralContent($conn, 'contact_info');
 $contact_data = json_decode($contact_info['extra_data'], true);
 $services = getServices($conn);
 
 $selected_service = $_GET['service'] ?? '';
-$page_title = "Contact Us - Elite Sports Management";
+$page_title = "Contact Us" .' | '. htmlspecialchars($site_settings['site_name']);
 require_once 'header.php';
 ?>
 

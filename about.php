@@ -1,18 +1,21 @@
 <?php
-// about.php
+// Replace the existing database connection code with this:
 require_once 'config/database.php';
 require_once 'includes/functions.php';
 
 $database = new Database();
 $conn = $database->getConnection();
 
+// Get site settings
+$site_settings = getSiteSettings($conn);
+
 $about_content = getGeneralContent($conn, 'about_content');
-$page_title = "About Us - Elite Sports Management";
+$page_title = "About Us" . " | " . htmlspecialchars($site_settings['site_name']);
 require_once 'header.php';
 ?>
 
     <!-- Hero Section -->
-    <section class="bg-blue-600 text-white py-20">
+    <section class="bg-blue-600 text-white py-16">
         <div class="container mx-auto px-4 text-center">
             <h1 class="text-4xl md:text-5xl font-bold mb-4">About Us</h1>
             <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Leading sports management company dedicated to athlete success</p>

@@ -1,10 +1,13 @@
 <?php
-// index.php - Updated version
+// Replace the existing database connection code with this:
 require_once 'config/database.php';
 require_once 'includes/functions.php';
 
 $database = new Database();
 $conn = $database->getConnection();
+
+// Get site settings
+$site_settings = getSiteSettings($conn);
 
 // Get all content from database
 $hero_content = getHeroContent($conn);
@@ -14,7 +17,7 @@ $about_content = getGeneralContent($conn, 'about_content');
 $contact_info = getGeneralContent($conn, 'contact_info');
 $contact_data = json_decode($contact_info['extra_data'], true);
 
-$page_title = "Elite Sports Management";
+$page_title = htmlspecialchars($site_settings['site_name']);
 require_once 'header.php';
 ?>
 
@@ -197,7 +200,7 @@ require_once 'header.php';
     <!-- Contact Section -->
     <section id="contact" class="py-16 bg-gray-100">
         <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
                 <div class="md:flex">
                     <div class="md:w-1/2 bg-blue-600 text-white p-8 md:p-12">
                         <h2 class="text-3xl font-bold mb-6">Get In Touch</h2>
@@ -231,30 +234,44 @@ require_once 'header.php';
                     </div>
                     
                     <div class="md:w-1/2 p-8 md:p-12">
-                        <form class="space-y-6">
+                        <form class="space-y-6" method="POST" action="process-contact.php">
                             <div>
-                                <label for="name" class="block text-gray-700 font-medium mb-2">Full Name</label>
-                                <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Your Name">
+                                <label for="name" class="block text-gray-700 font-medium mb-2">Full Name *</label>
+                                <input type="text" id="name" name="name" required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                    placeholder="Your Name">
                             </div>
                             
                             <div>
-                                <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
-                                <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="your.email@example.com">
+                                <label for="email" class="block text-gray-700 font-medium mb-2">Email Address *</label>
+                                <input type="email" id="email" name="email" required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                    placeholder="your.email@example.com">
+                            </div>
+                            
+                            <div>
+                                <label for="phone" class="block text-gray-700 font-medium mb-2">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                    placeholder="+1 (555) 123-4567">
                             </div>
                             
                             <div>
                                 <label for="service" class="block text-gray-700 font-medium mb-2">Service Interested In</label>
-                                <select id="service" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <select id="service" name="service" 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                     <option value="">Select a service</option>
                                     <?php foreach ($services as $service): ?>
-                                    <option value="<?php echo $service['id']; ?>"><?php echo htmlspecialchars($service['title']); ?></option>
+                                    <option value="<?php echo $service['title']; ?>"><?php echo htmlspecialchars($service['title']); ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
                             
                             <div>
-                                <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
-                                <textarea id="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Your message..."></textarea>
+                                <label for="message" class="block text-gray-700 font-medium mb-2">Message *</label>
+                                <textarea id="message" name="message" rows="4" required 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                        placeholder="Your message..."></textarea>
                             </div>
                             
                             <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition duration-300">

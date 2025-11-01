@@ -1,9 +1,13 @@
 <?php
+// Replace the existing database connection code with this:
 require_once 'config/database.php';
 require_once 'includes/functions.php';
 
 $database = new Database();
 $conn = $database->getConnection();
+
+// Get site settings
+$site_settings = getSiteSettings($conn);
 
 $gallery_id = intval($_GET['id'] ?? 0);
 
@@ -28,7 +32,7 @@ $stmt->execute([$gallery_id]);
 $related_galleries = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Set page title
-$page_title = htmlspecialchars($gallery['title']) . " - Elite Sports Management";
+$page_title = htmlspecialchars($gallery['title']) .' | '. htmlspecialchars($site_settings['site_name']);
 require_once 'header.php';
 ?>
 
