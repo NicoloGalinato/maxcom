@@ -317,7 +317,7 @@ if (!function_exists('formatBytes')) {
  */
 // Add this to your includes/functions.php file
 function getSiteSettings($conn) {
-    $stmt = $conn->prepare("SELECT extra_data FROM general_content WHERE section_name = 'site_settings'");
+    $stmt = $conn->prepare("SELECT extra_data, image_path FROM general_content WHERE section_name = 'site_settings'");
     $stmt->execute();
     $settings_data = $stmt->fetch(PDO::FETCH_ASSOC);
     
@@ -329,14 +329,18 @@ function getSiteSettings($conn) {
         'facebook_url' => '',
         'twitter_url' => '',
         'instagram_url' => '',
-        'linkedin_url' => ''
+        'linkedin_url' => '',
+        'site_logo' => null
     ];
     
-    if ($settings_data && $settings_data['extra_data']) {
-        $saved_settings = json_decode($settings_data['extra_data'], true);
-        if ($saved_settings) {
-            return array_merge($default_settings, $saved_settings);
+    if ($settings_data) {
+        if ($settings_data['extra_data']) {
+            $saved_settings = json_decode($settings_data['extra_data'], true);
+            if ($saved_settings) {
+                $default_settings = array_merge($default_settings, $saved_settings);
+            }
         }
+        $default_settings['site_logo'] = $settings_data['image_path'];
     }
     
     return $default_settings;

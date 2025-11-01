@@ -146,9 +146,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
              @scroll.window="scrolled = window.pageYOffset > 10"
              :class="scrolled ? 'header-scrolled' : ''">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center">
-                <i class="fas fa-trophy text-blue-600 text-2xl mr-2"></i>
-                <span class="text-xl font-bold text-gray-800"><?php echo htmlspecialchars($site_settings['site_name']); ?></span>
+            <div class="flex items-center space-x-3">
+                <?php if (!empty($site_settings['site_logo'])): ?>
+                    <img src="<?php echo htmlspecialchars($site_settings['site_logo']); ?>" 
+                        alt="<?php echo htmlspecialchars($site_settings['site_name']); ?>" 
+                        class="h-10 w-auto">
+                <?php else: ?>
+                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
+                        <?php echo substr($site_settings['site_name'], 0, 1); ?>
+                    </div>
+                <?php endif; ?>
+                <span class="text-xl font-bold text-gray-800">
+                    <?php echo htmlspecialchars($site_settings['site_name']); ?>
+                </span>
             </div>
             
             <!-- Desktop Navigation -->

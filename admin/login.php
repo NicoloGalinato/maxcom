@@ -70,10 +70,6 @@ if ($_POST) {
                 Sign in
             </button>
         </form>
-        
-        <div class="mt-6 text-center text-sm text-gray-500">
-            Default credentials: admin / admin123
-        </div>
     </div>
 </body>
 </html>
